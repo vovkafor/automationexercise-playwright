@@ -9,16 +9,13 @@ export class LoginPage {
   readonly errorMessage: Locator;
 
   constructor(page: Page) {
-    this.page          = page;
-    this.emailInput    = page.locator('input[data-qa="login-email"]');
+    this.page = page;
+    this.emailInput = page.locator('input[data-qa="login-email"]');
     this.passwordInput = page.locator('input[data-qa="login-password"]');
-    this.loginButton   = page.locator('button[data-qa="login-button"]');
-    
-    // Исправленный локатор статуса логина
-    this.loggedInText  = page.locator('li:has(.fa-user):has-text("Logged in as")');
-    
-    // Локатор ошибки (текст под кнопкой логина)
-    this.errorMessage  = page.locator('form[action="/login"] p[style*="color: red"]');
+    this.loginButton = page.locator('button[data-qa="login-button"]');
+    // Упрощаем поиск: ищем просто текст "Logged in as" в хедере
+    this.loggedInText = page.locator('header').getByText(/Logged in as/i);
+    this.errorMessage = page.locator('p[style*="color: red"]');
   }
 
   async goto() {
@@ -29,6 +26,5 @@ export class LoginPage {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.loginButton.click();
-    await this.page.waitForLoadState('domcontentloaded');
   }
 }

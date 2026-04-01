@@ -11,22 +11,23 @@ export class HomePage {
   readonly subscribeSuccess: Locator;
 
   constructor(page: Page) {
-    this.page             = page;
-    this.logo             = page.locator('.logo img');
-    this.navProducts      = page.locator('a[href="/products"]');
-    this.navCart          = page.locator('.shop-menu .nav >> text=Cart').first();
-    this.navSignup        = page.locator('a[href="/login"]');
-    this.subscribeEmail   = page.locator('#susbscribe_email');
-    this.subscribeButton  = page.locator('#subscribe');
+    this.page = page;
+    this.logo = page.locator('.logo img');
+    // Исправляем типизацию: каждый элемент должен быть page.locator
+    this.navProducts = page.locator('a[href="/products"]');
+    this.navCart = page.locator('a[href="/view_cart"]').first();
+    this.navSignup = page.locator('a[href="/login"]');
+    this.subscribeEmail = page.locator('#susbscribe_email');
+    this.subscribeButton = page.locator('#subscribe');
     this.subscribeSuccess = page.locator('#success-subscribe');
   }
 
   async goto() {
-    await this.page.goto('/', { waitUntil: 'domcontentloaded' });
+    await this.page.goto('/');
   }
 
+  // Добавляем недостающую функцию
   async subscribe(email: string) {
-    await this.subscribeEmail.scrollIntoViewIfNeeded();
     await this.subscribeEmail.fill(email);
     await this.subscribeButton.click();
   }
