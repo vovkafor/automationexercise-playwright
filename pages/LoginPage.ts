@@ -6,6 +6,7 @@ export class LoginPage {
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
   readonly loggedInText: Locator;
+  readonly errorMessage: Locator; // Добавили свойство
 
   constructor(page: Page) {
     this.page          = page;
@@ -13,9 +14,11 @@ export class LoginPage {
     this.passwordInput = page.locator('input[data-qa="login-password"]');
     this.loginButton   = page.locator('button[data-qa="login-button"]');
     
-    // Ищем элемент списка, в котором есть иконка пользователя (fa-user) 
-    // и текст "Logged in as". Это 100% сработает.
+    // Надежный локатор для проверки входа
     this.loggedInText  = page.locator('li:has(.fa-user):has-text("Logged in as")');
+    
+    // Локатор для ошибки (красный текст при неверном пароле)
+    this.errorMessage  = page.locator('form[action="/login"] p[style*="color: red"]');
   }
 
   async goto() {
@@ -26,7 +29,7 @@ export class LoginPage {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.loginButton.click();
-    // Ждем, пока сайт нас пропустит дальше
-    await this.page.waitForLoadState('networkidle');
+    // Вместо networkidle ждем просто загрузки DOM — это быстрее и стабильнее
+    await this.page.waitForLoadState('domcontentloaded');
   }
 }

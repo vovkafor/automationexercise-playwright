@@ -7,14 +7,13 @@ export class HomePage {
 
   constructor(page: Page) {
     this.page    = page;
-    // Логотип на этом сайте — это картинка внутри .navbar-brand
     this.logo    = page.locator('.logo img');
-    // Корзина в верхнем меню (точное попадание)
-    this.navCart = page.locator('.shop-menu .nav >> text=Cart');
+    this.navCart = page.locator('.shop-menu .nav >> text=Cart').first();
   }
 
   async goto() {
-    await this.page.goto('/');
-    await this.page.waitForLoadState('domcontentloaded');
+    // На этом сайте главная страница иногда долго грузит рекламу, 
+    // поэтому используем 'commit', чтобы просто дождаться начала перехода
+    await this.page.goto('/', { waitUntil: 'commit' });
   }
 }
