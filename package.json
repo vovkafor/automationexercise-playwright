@@ -1,0 +1,14 @@
+{
+  "name": "automationexercise-playwright",
+  "version": "1.0.0",
+  "description": "Playwright E2E test framework for automationexercise.com",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:report": "npx playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "typescript": "^5.4.0"
+  }
+}
