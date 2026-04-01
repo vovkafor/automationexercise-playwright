@@ -15,7 +15,8 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    headless: false, // показываем браузер — важно для демо!
+    // В облаке (CI) запускаем без окна, на Макбуке — с окном браузера
+    headless: !!process.env.CI, 
   },
   projects: [
     {
