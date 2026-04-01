@@ -6,7 +6,7 @@ export class LoginPage {
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
   readonly loggedInText: Locator;
-  readonly errorMessage: Locator; // Добавили свойство
+  readonly errorMessage: Locator;
 
   constructor(page: Page) {
     this.page          = page;
@@ -14,10 +14,10 @@ export class LoginPage {
     this.passwordInput = page.locator('input[data-qa="login-password"]');
     this.loginButton   = page.locator('button[data-qa="login-button"]');
     
-    // Надежный локатор для проверки входа
+    // Исправленный локатор статуса логина
     this.loggedInText  = page.locator('li:has(.fa-user):has-text("Logged in as")');
     
-    // Локатор для ошибки (красный текст при неверном пароле)
+    // Локатор ошибки (текст под кнопкой логина)
     this.errorMessage  = page.locator('form[action="/login"] p[style*="color: red"]');
   }
 
@@ -29,7 +29,6 @@ export class LoginPage {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.loginButton.click();
-    // Вместо networkidle ждем просто загрузки DOM — это быстрее и стабильнее
     await this.page.waitForLoadState('domcontentloaded');
   }
 }
