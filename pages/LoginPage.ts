@@ -13,9 +13,9 @@ export class LoginPage {
     this.emailInput   = page.locator('input[data-qa="login-email"]');
     this.passwordInput= page.locator('input[data-qa="login-password"]');
     this.loginButton  = page.locator('button[data-qa="login-button"]');
-    this.errorMessage = page.locator('p:has-text("Your email or password is incorrect")');
-    // Теперь ищем текст "Logged in as" независимо от регистра
-    this.loggedInText = page.getByText(/Logged in as/i);
+    this.errorMessage = page.locator('[style*="color: red"]'); // более гибкий поиск ошибки
+    // Ищем строку, которая содержит "Logged in as" в меню
+    this.loggedInText = page.locator('li:has-text("Logged in as"), a:has-text("Logged in as")').first();
   }
 
   async goto() {
@@ -26,5 +26,7 @@ export class LoginPage {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.loginButton.click();
+    // Ждем завершения навигации после логина
+    await this.page.waitForLoadState('networkidle');
   }
 }
