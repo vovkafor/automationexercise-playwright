@@ -14,9 +14,9 @@ export class LoginPage {
     this.passwordInput = page.locator('input[data-qa="login-password"]');
     this.loginButton = page.locator('button[data-qa="login-button"]');
     
-    // Самый надежный способ: ищем ссылку (a), в которой есть текст "Logged in as"
-    // даже если внутри есть другие теги типа <b>
-    this.loggedInText = page.locator('header a:has-text("Logged in as")');
+    // Ищем любой элемент li, внутри которого есть текст "Logged in as"
+    // Это самый надежный способ для этого сайта
+    this.loggedInText = page.locator('li', { hasText: 'Logged in as' });
     
     this.errorMessage = page.locator('p[style*="color: red"]');
   }
@@ -28,8 +28,10 @@ export class LoginPage {
   async login(email: string, password: string) {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
-    await this.loginButton.click();
-    // Ждем, чтобы страница успела обновиться
-    await this.page.waitForLoadState('load');
+    // Кликаем и ждем, пока элемент статуса логина появится в DOM
+    await Promise.all([
+      this.loginButton.click(),
+      this.loggedInText.waitFor({ state: 'visible', timeout: 10000 }).catch(() => {}),
+    ]);
   }
 }
