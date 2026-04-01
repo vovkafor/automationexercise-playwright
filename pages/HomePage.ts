@@ -15,7 +15,8 @@ export class HomePage {
     this.page             = page;
     this.logo             = page.locator('#header a.navbar-brand');
     this.navProducts      = page.locator('a[href="/products"]');
-    this.navCart          = page.locator('a[href="/view_cart"]');
+    // Добавили .first(), чтобы не падать из-за дублей кнопок в меню
+    this.navCart          = page.locator('a[href="/view_cart"]').first();
     this.navSignup        = page.locator('a[href="/login"]');
     this.navLogout        = page.locator('a[href="/logout"]');
     this.subscribeEmail   = page.locator('#susbscribe_email');

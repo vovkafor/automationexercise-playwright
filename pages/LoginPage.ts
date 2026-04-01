@@ -14,7 +14,8 @@ export class LoginPage {
     this.passwordInput= page.locator('input[data-qa="login-password"]');
     this.loginButton  = page.locator('button[data-qa="login-button"]');
     this.errorMessage = page.locator('p:has-text("Your email or password is incorrect")');
-    this.loggedInText = page.locator('a:has-text("Logged in as")');
+    // Теперь ищем текст "Logged in as" независимо от регистра
+    this.loggedInText = page.getByText(/Logged in as/i);
   }
 
   async goto() {
